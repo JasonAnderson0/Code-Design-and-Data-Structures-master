@@ -11,6 +11,11 @@ BinaryTree::BinaryTree()
     m_pRoot = nullptr;
 }
 
+BinaryTree::~BinaryTree()
+{
+
+}
+
 
 // Return whether the tree is empty
 bool BinaryTree::IsEmpty() const 

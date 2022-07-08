@@ -167,8 +167,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Code design\BinaryTree\BinaryTree\BinaryTreeTests\CDDS_BinaryTree\main.cpp" />
     <ClCompile Include="BinaryTree.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="TreeNode.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -25,8 +25,11 @@ public:
 	int loadTexture(const char* sprite, int length)
 	{
 		int key = hash(sprite, length);
-		Texture2D texture;
-		Texture2D* tempcheck = &textures[key];
+		Texture2D texture = textures[key];
+		Texture2D* tempcheck = &texture;
+
+		
+
 		if(tempcheck != nullptr)
 		{
 			return key;
@@ -37,13 +40,10 @@ public:
 			textures[key] = texture;
 			return key;
 		}
-
-
 	}
 
 	Texture2D* textures;
 	int m_size;
-
 };
 
 

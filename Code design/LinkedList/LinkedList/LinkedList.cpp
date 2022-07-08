@@ -20,16 +20,19 @@ class LinkedList
       int posY = 80;
 
 
-      void Draw(int numb)
+      void Draw(int numb, int row)
       {
-          DrawRectangle(posX * numb,posY, 60, 60, color);
+              DrawRectangle(posX * numb, posY * row, 60, 60, color);
 
+              static char buffer[10];
 
+              sprintf_s(buffer, "%d", data);
+              DrawText(buffer, posX * numb + 10, posY * row + 10, 35, BLACK);
 
-          if (next != nullptr)
-          {
-              DrawRectangle(next->posX * numb + 60, next->posY + 30, 20, 5, BLACK);
-          }
+              if (next != nullptr)
+              {
+                  DrawRectangle(next->posX * numb + 60, next->posY * row + 30, 20, 5, BLACK);
+              }
       }
     };
 
@@ -43,8 +46,6 @@ class LinkedList
           node = next;
       }
   }
-
-  //List nullptr <->Node1 <-> Node2 <-> nullptr
 
   bool isEmpty() { return (head == nullptr && tail==nullptr); }
 
@@ -112,8 +113,22 @@ class LinkedList
 
   void popLocation(T& searchVal)
   {
-      
+      if (isEmpty()) return;
+      auto iter = head;
+      while (iter != tail) {
+          if (iter->data = searchVal)
+          {
+              if (iter->next != nullptr && iter->prev != nullptr) 
+              {
+                  iter->next->prev = iter->prev;
+                  iter->prev->next = iter->next;
+              }
+                  delete iter;
 
+              break;
+          }
+          else { iter = iter->next; }
+      }
   }
 
   int Count() 
@@ -130,30 +145,28 @@ class LinkedList
 
   void Sort()
   {
-      int swapped, i;
-      Node* ptr1;
-      Node* ptr = nullptr;
+      bool sorted;
+      Node* temp;
+      Node* temp2 = nullptr;
 
       if (head == nullptr)
           return;
       do 
       {
-          swapped = 0;
-          ptr1 = head;
+          sorted = 0;
+          temp = head;
 
-          while(ptr1->next != ptr)
+          while(temp->next != temp2)
           {
-              if(ptr1->data > ptr1->next->data)
+              if(temp->data > temp->next->data)
               {
-                  std::swap(ptr1->data, ptr1->next->data);
-                  swapped = 1;
+                  std::swap(temp->data, temp->next->data);
+                  sorted = 1;
               }
-              ptr1 = ptr1->next;
+              temp = temp->next;
           }
-          ptr = ptr1;
-      } while (swapped);
-
-
+          temp2 = temp;
+      } while (sorted);
   }
 
   Node* begin() {return head;}
@@ -171,13 +184,17 @@ int main()
 {
     LinkedList<int> list;
 
-    list.PushFront(10);
     list.PushFront(3);
     list.PushFront(8);
+    list.PushFront(10);
     list.PushBack(20);
 
-    LinkedList<int> list2 = list;
-    list2.PushFront(88);
+    LinkedList<int> list2;
+
+    list2.PushFront(4);
+    list2.PushFront(1);
+    list2.PushFront(63);
+    list2.PushFront(250);
     list2.Sort();
     int boxValue = 0;
     bool boxEdit = false;
@@ -186,36 +203,49 @@ int main()
     int screenWidth = 800;
     int screenHeight = 550;
 
-
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
 
     SetTargetFPS(60);
 
     float delta = GetFrameTime();
 
+    int thirty = 30;
+
     while (!WindowShouldClose()) 
     {
-
-
         BeginDrawing();
         ClearBackground(WHITE);
 
-
         int number = list.Count();
         int count = 0;
-        for (LinkedList<int>::Node* node = list2.begin(); node != nullptr; node = node->next)
-        {
-            count++;
-            node->Draw(count);
-
-            sprintf_s(buffer, "%d", node->data);
-            DrawText(buffer, node->posX * count + 10, node->posY + 10, 35, BLACK);
-        }
 
         sprintf_s(buffer, "%d", number);
         DrawText(buffer, 150, 10, 35, BLACK);
         const char nodes[] = "Nodes:";
         DrawText(nodes, 10, 10, 35, BLACK);
+
+
+        for (LinkedList<int>::Node* node = list.begin(); node != nullptr; node = node->next)
+        {
+            if (node != nullptr) {
+                count++;
+                node->Draw(count, 1);
+            }
+        }
+
+        count = 0;
+
+        for (LinkedList<int>::Node* node = list2.begin(); node != nullptr; node = node->next)
+        {
+            if (node != nullptr) {
+                count++;
+                node->Draw(count, 2);
+
+            }
+        }
+
+
+
         EndDrawing();
     }
 

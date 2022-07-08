@@ -1,6 +1,5 @@
 #pragma once
 #include "raylib.h"
-#include "ResourceManager.h"
 
 class Critter
 {
@@ -11,13 +10,14 @@ protected:
 
 	Texture2D m_texture;
 
-	bool m_isDirty;
+	bool m_isLoaded;
+	bool m_isDirty;		// indicates if we've already processed a collision response for this critter
 	
 public:
 	Critter();
 	~Critter();
 
-	void Init(Vector2 position,Vector2 velocity, float radius, const char* texture);
+	void Init(Vector2 position, Vector2 velocity, float radius, const char* texture);
 	void Destroy();
 	void Update(float dt);
 	void Draw();
@@ -37,6 +37,8 @@ public:
 
 	bool IsDirty() { return m_isDirty; }
 	void SetDirty() { m_isDirty = true; }
+
+	bool IsDead() { return m_isLoaded == false; }
 
 };
 
