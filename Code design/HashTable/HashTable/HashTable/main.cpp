@@ -22,17 +22,16 @@ public:
 	}
 
 
-	int loadTexture(const char* sprite, int length)
+	Texture2D* loadTexture(const char* sprite, int length)
 	{
 		int key = hash(sprite, length);
-		Texture2D texture = textures[key];
-		Texture2D* tempcheck = &texture;
+		Texture2D *tempcheck;
 
 		
 
-		if(tempcheck != nullptr)
+		if (tempcheck != nullptr)
 		{
-			return key;
+			return tempcheck;
 		}
 		else
 		{
@@ -42,6 +41,7 @@ public:
 		}
 	}
 
+private:
 	Texture2D* textures;
 	int m_size;
 };
@@ -60,8 +60,8 @@ int main()
 	int size = 100;
 
 	HashTable table(size);
-	int key = table.loadTexture("ship_0000.png", 20);
-	int Okey = table.loadTexture("ship_0001.png", 20);
+	Texture2D* key = table.loadTexture("ship_0000.png", 20);
+	Texture2D* Okey = table.loadTexture("ship_0001.png", 20);
 
 
 	while(!WindowShouldClose())
@@ -69,7 +69,7 @@ int main()
 		BeginDrawing();
 
 
-		DrawTexture(table.textures[key], ScreenWidth/2, ScreenHeight/2, RAYWHITE);
+		DrawTexture(key, ScreenWidth/2, ScreenHeight/2, RAYWHITE);
 		//DrawTexture(table.textures[Okey], ScreenWidth, ScreenHeight, RAYWHITE);
 
 		ClearBackground(RAYWHITE);
